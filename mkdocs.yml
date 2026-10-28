@@ -1,0 +1,13 @@
+site_name: Railway Network Firmware Boards
+theme:
+  name: material
+  features:
+    - navigation.instant
+  palette:
+    scheme: red
+    accent: red
+extra_css:
+  - stylesheets/banner_reload.css
+plugins:
+  - search
+

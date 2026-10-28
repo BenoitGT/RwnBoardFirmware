@@ -1,0 +1,9 @@
+:root,    .md-nav--primary {
+ --md-primary-fg-color:#f52821;
+}
+
+
+header{
+ background-image:url(../images/microchip_banner.png);
+ height: 15em;
+}
