@@ -37,7 +37,7 @@ jobs:
       - name: Setup MkDocs
         run : pip install mkdocs-material
       - name: Build with MkDocs
-        run : mkdocs gh-deploy --config-file mkdocs.yml
+        run : ls;mkdocs gh-deploy --config-file mkdocs.yml
   # Deployment job
   deploy:
     environment:
