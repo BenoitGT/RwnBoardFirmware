@@ -7,7 +7,7 @@ banner: "[[microchip_banner.png]]"
 banner_y: 70
 ---
 
-# Railway Network Firmware Boards — SubSystems Document Design
+# Railway Network Firmware Boards — SubSystems Design Document 
 
 > [!info] About
 > Structured sumary of sevral topics arounds **Railway Network Firmware Boards**  project , a Microchip MCU based project.  Boards and firmware ares based on a moduluard conception for reuse purpose.

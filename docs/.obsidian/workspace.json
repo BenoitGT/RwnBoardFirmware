@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "firmware/02-Modular Architecture.md",
+                "file": "index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02-Modular Architecture"
+              "title": "index"
             }
           }
         ]
@@ -190,11 +190,13 @@
   },
   "active": "4375fc90185a1a39",
   "lastOpenFiles": [
-    "firmware/06-Topologie-Graphe.md",
     "firmware/02-Modular Architecture.md",
-    "firmware/00-Conception Overview.md",
-    "images/angular_node_banner.png",
     "firmware/01-Vision-et-Contexte.md",
+    "index.md",
+    "firmware/00-Conception Overview.md",
+    "00-Conception Overview.md",
+    "firmware/06-Topologie-Graphe.md",
+    "images/angular_node_banner.png",
     "firmware/07-Communication-Serie.md",
     "electronic board/blocks/System LED Indicator.md",
     "electronic board/blocks/Reset Button.md",
