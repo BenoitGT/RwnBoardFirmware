@@ -1,0 +1,114 @@
+{
+    "version": "1.9",
+    "configurations": [
+        {
+            "name": "StarterBoard",
+            "id": "",
+            "device": "PIC16F628A",
+            "imagePath": "./out/RwnBoardFirmware/StarterBoard.elf",
+            "toolProperties": "StarterBoard-tool-base",
+            "tool": "Simulator",
+            "packs": [
+                {
+                    "name": "PIC16Fxxx_DFP",
+                    "vendor": "Microchip",
+                    "version": "1.9.176"
+                }
+            ],
+            "fileSet": "StarterBoard",
+            "toolchain": "toolchain XC8 3.10",
+            "userVariables": "StarterBoard-uservariables",
+            "postBuildSteps": [
+                "cd %{ProjectPath} ; python3 mapreport.py \"./_build/%{ProjectName}/%{ConfigurationName}/mem.map\" --hex \"./out/%{ProjectName}/%{ConfigurationName}.hex\" -o \"./docs/%{ConfigurationName}_mem_report.md\" "
+            ]
+        },
+        {
+            "name": "SignalDecoder",
+            "id": "",
+            "device": "PIC16F628A",
+            "imageType": "application",
+            "imagePath": "./out/RwnBoardFirmware/SignalDecoder.elf",
+            "packs": [
+                {
+                    "name": "PIC16Fxxx_DFP",
+                    "vendor": "Microchip",
+                    "version": "1.9.176"
+                }
+            ],
+            "fileSet": "SignalDecoder",
+            "toolchain": "SignalDecoder_toolchain",
+            "extend": "StarterBoard"
+        }
+    ],
+    "propertyGroups": [
+        {
+            "name": "StarterBoard-uservariables",
+            "type": "uservariables",
+            "properties": {}
+        },
+        {
+            "name": "toolchain XC8 3.10",
+            "extend": "",
+            "type": "toolchain",
+            "provider": "microchip.toolchains:xc8@3.10",
+            "properties": {
+                "HI-TECH-COMP.extra-include-directories": [
+                    "./decoders/RwnSarterBoard",
+                    "./"
+                ]
+            }
+        },
+        {
+            "name": "default-XC8",
+            "type": "toolchain",
+            "provider": "microchip.toolchains:xc8@3.10",
+            "properties": {
+                "HI-TECH-COMP.extra-include-directories": [
+                    "/home/benoit/Electronique/MPLABXProjects/RwnBoardFirmware/decoders/RwnSarterBoard",
+                    "./"
+                ],
+                "HI-TECH-LINK.display-class-usage": false,
+                "HI-TECH-LINK.display-psect-usage": false
+            }
+        },
+        {
+            "name": "SignalDecoder_toolchain",
+            "type": "toolchain",
+            "provider": "microchip.toolchains:xc8@3.10",
+            "properties": {
+                "HI-TECH-COMP.extra-include-directories": [
+                    "./",
+                    "./decoders/RwnSignalDecoder"
+                ]
+            }
+        },
+        {
+            "name": "StarterBoard-tool-base",
+            "type": "tool",
+            "properties": {
+                "oscillator.frequency": "4",
+                "uart1IO": "window"
+            }
+        }
+    ],
+    "fileSets": [
+        {
+            "name": "StarterBoard",
+            "files": [
+                {
+                    "include": "**/*",
+                    "exclude": "**/@(build|_build|out|cmake|.vscode)/**/*"
+                }
+            ]
+        },
+        {
+            "name": "SignalDecoder",
+            "files": [
+                {
+                    "include": "**/*",
+                    "exclude": "**/@(build|_build|out|cmake|.vscode)/**/*"
+                }
+            ]
+        }
+    ]
+}

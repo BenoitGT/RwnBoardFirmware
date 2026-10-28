@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+   "inputs": [
+    {
+      "id": "cfg",
+      "type": "pickString",
+      "description": "Configuration (nom du decodeur)",
+      "options": ["StarterBoard", "SignalDecoder"],
+      "default": "StarterBoard"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Programmer (PICkit 2)",
+      "type": "shell",
+      "command": "pk2cmd",
+      "args": [
+        "-B/usr/share/pk2/",
+        "-PPIC16F628A", 
+        "-F${workspaceFolder}/out/RwnBoardFirmware/${input:cfg}.hex",
+         "-M", "-Y", "-R"],
+      "problemMatcher": []
+    }
+  ]
+}

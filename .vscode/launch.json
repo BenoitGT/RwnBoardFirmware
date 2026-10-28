@@ -1,0 +1,55 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      // Note: Properties here can override MPLAB project settings
+      "name": "Launch RwnBoardFirmware: StarterBoard",
+      "type": "mplab-core-da",
+      "request": "launch",
+      "project": "RwnBoardFirmware",
+      "configuration": "StarterBoard",
+      "stopOnEntry": true,
+      "preLaunchTask": "RwnBoardFirmware: StarterBoard - Build",
+      "program": "${workspaceFolder}/out/RwnBoardFirmware/StarterBoard.elf",
+      "tool": "Simulator",
+      "device": "PIC16F628A"
+    },
+    {
+      // Note: Properties here can override MPLAB project settings
+      "name": "Program RwnBoardFirmware: StarterBoard - Production",
+      "type": "mplab-core-da",
+      "request": "launch",
+      "project": "RwnBoardFirmware",
+      "configuration": "StarterBoard",
+      "noDebug": true,
+      "preLaunchTask": "RwnBoardFirmware: StarterBoard - Build (Production)",
+      "program": "${workspaceFolder}/out/RwnBoardFirmware/production/StarterBoard-production.hex"
+    },
+    {
+      // Note: Properties here can override MPLAB project settings
+      "name": "Launch RwnBoardFirmware: SignalDecoder",
+      "type": "mplab-core-da",
+      "request": "launch",
+      "project": "RwnBoardFirmware",
+      "configuration": "SignalDecoder",
+      "stopOnEntry": true,
+      "preLaunchTask": "RwnBoardFirmware: SignalDecoder - Build",
+      "program": "${workspaceFolder}/out/RwnBoardFirmware/SignalDecoder.elf"
+    },
+    {
+      // Note: Properties here can override MPLAB project settings
+      "name": "Program RwnBoardFirmware: SignalDecoder - Production",
+      "type": "mplab-core-da",
+      "request": "launch",
+      "project": "RwnBoardFirmware",
+      "configuration": "SignalDecoder",
+      "noDebug": true,
+      "preLaunchTask": "RwnBoardFirmware: SignalDecoder - Build (Production)",
+      "program": "${workspaceFolder}/out/RwnBoardFirmware/production/SignalDecoder-production.hex"
+    }
+  ]
+}
