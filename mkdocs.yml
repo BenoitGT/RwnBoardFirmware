@@ -1,6 +1,6 @@
 site_name: Railway Network Firmware Boards
 theme:
-  name: mkdocs
+  name: material
   features:
     - navigation.instant
   palette:
