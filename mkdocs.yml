@@ -2,24 +2,59 @@ site_name: Railway Network Firmware Boards
 theme:
   name: material
   features:
-    - navigation.instant
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.highlight
+    - search.suggest
+    - content.code.copy
   palette:
-    scheme: default
-    accent: red
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      accent: red
+      toggle:
+        icon: material/weather-night
+        name: Passer en mode sombre
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Passer en mode clair
 extra_css:
   - assets/stylesheets/banner_reload.css
 plugins:
   - search
 #  - obsidian-support
-#  - ezlinks :
-#      wikilinks: true
-#      reference_links: true
-  - roamlinks
+  - ezlinks:
+      wikilinks: true
+      reference_links: false
+      warn_ambiguities: true
+# Callouts Obsidian ( > [!note] Titre ) convertis en admonitions Material
+  - callouts
+ 
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences :
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  # Mermaid : les blocs ```mermaid de l'Obsidian sont rendus par Material (script chargé automatiquement)
+  - pymdownx.superfences:
       custom_fences:
-        -name: mermid
-        class: mermaid
-        format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.mark        # ==texte surligné==
+  - pymdownx.tilde       # ~~texte barré~~
