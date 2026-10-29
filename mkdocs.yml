@@ -1,13 +1,13 @@
 site_name: Railway Network Firmware Boards
 theme:
-  name: material
+  name: mkdocs
   features:
     - navigation.instant
   palette:
     scheme: red
     accent: red
 extra_css:
-  - stylesheets/banner_reload.css
+  - assets/stylesheets/banner_reload.css
 plugins:
   - search
-
+  - obsidian-support
