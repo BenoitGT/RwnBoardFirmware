@@ -4,14 +4,22 @@ theme:
   features:
     - navigation.instant
   palette:
-    scheme: red
+    scheme: default
     accent: red
 extra_css:
   - assets/stylesheets/banner_reload.css
 plugins:
   - search
-  - obsidian-support
+#  - obsidian-support
+#  - ezlinks :
+#      wikilinks: true
+#      reference_links: true
+  - roamlinks
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences :
+      custom_fences:
+        -name: mermid
+        class: mermaid
+        format: !!python/name:pymdownx.superfences.fence_code_format
