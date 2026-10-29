@@ -11,3 +11,7 @@ extra_css:
 plugins:
   - search
   - obsidian-support
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
