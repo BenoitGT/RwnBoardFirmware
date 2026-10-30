@@ -1,0 +1,45 @@
+[project]
+site_name = "Railway Network Firmware Boards"
+#site_url = "https://benoitgt.github.io/RwnBoardFirmware/"
+exclude_docs = """.*/"""
+not_in_nav = """/assets"""
+extra_css = [
+  "assets/stylesheets/banner_reload.css",
+]
+plugins = [
+    "callouts"
+]
+
+[project.theme]
+features = [
+  "navigation.top",
+]
+
+[project.theme.palette]
+primary = "red"
+accent = "red"
+scheme = "default"
+
+[project.markdown_extensions]
+admonition = {}
+pymdownx.details = {}
+pymdownx.superfences = {
+   custom_fences = [
+       {
+            name = "mermaid",
+            class = "mermaid",
+           format = "pymdownx.superfences.fence_code_format"
+        },    
+    ]
+}
+
+[project.validation]
+invalid_links = true
+invalid_link_anchors = true
+unresolved_references = false
+unresolved_footnotes = false
+unused_definitions = false
+unused_footnotes = false
+shadowed_definitions = false
+shadowed_footnotes = false
+

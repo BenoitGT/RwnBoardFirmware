@@ -1,5 +1,5 @@
 # Sample workflow for building and deploying a MkDocs site to GitHub Pages
-name: Deploy MkDocs with GitHub Pages dependencies preinstalled
+name: Deploy GitHub Pages with dependencies preinstalled
 
 on:
   # Runs on pushes targeting the default branch
@@ -22,26 +22,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
-  build-pages:
+  setup-env:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/configure-pages@v6
+      # Checkout doc data
       - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v7
+      # Setup python env
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.12
-      - name: Setup MkDocs
-        run : pip install mkdocs-material mkdocs-obsidian-support-plugin mkdocs-ezlinks-plugin mkdocs-callouts
-      - name: Build with MkDocs
-        run : mkdocs build --config-file mkdocs.yml -d _site/
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
-        
-  # Deployment job
+      # install Zensical in python env
+      - name: Setup doc builder
+        run: pip install zensical
+
+  build-pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: setup-env
+    steps:
+      - name: Build GitHub Pages
+        run: zensical build --clean 
+
   deploy-pages:
     environment:
       name: github-pages
@@ -49,16 +58,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-pages
     steps:
-      #  - name: Checkout
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: gh-pages
-      # - name: Setup Pages
-      #   uses: actions/configure-pages@v5
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: '.'
+      # Upload result artefact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      # publish Github pages
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v5
+        id: deployment

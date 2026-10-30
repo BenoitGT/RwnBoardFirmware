@@ -1,4 +1,7 @@
 {
   "propertiesInDocument": "visible",
-  "showInlineTitle": false
+  "showInlineTitle": false,
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "alwaysUpdateLinks": true
 }

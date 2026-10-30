@@ -2,5 +2,5 @@ out/
 _*/
 dist/
 .vscode/settings.json
-.vscode/c_cpp_properties.json
+.vscode/c_cpp_properties.jso
 cmake/ 

@@ -1,7 +1,13 @@
-:root,    .md-nav--primary {
+:root > * {
  --md-primary-fg-color:#f52821;
+: 
 }
-
+.md-header--shadow {
+  box-shadow: 0 0 .2rem var(--md-default-fg-color),0 .2rem .4rem var(--md-default-fg-color--lightest);
+}
+.md-header {
+  color: var(--md-primary-bg-color);
+}
 
 header{
  background-image:url(../images/microchip_banner.png);

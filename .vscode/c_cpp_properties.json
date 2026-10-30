@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/microchip/xc8/v3.10/pic/include"
+            ],
+            "defines": [],
+            "compilerPath": "/opt/microchip/xc8/v3.10/bin/xc8-cc",
+            "cStandard": "c99",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}

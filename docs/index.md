@@ -18,9 +18,9 @@ banner_y: 70
 # Notes Map 
 
 ### Fondations
-- [[01-Vision-et-Contexte]] — goals, POC perimeter, constraints
+- [01-Vision-et-Contexte](/firmware/01-Vision-et-Contexte) — goals, POC perimeter, constraints
 - [[02-Modular Architecture]] — structure du repo, workspaces npm
-- [[03-Convention-Nommage]] — RawConfig*/*/*Dto, family, suffixes
+- [03-Convention-Nommage](firmware/03-Convention-Nommage.md) — RawConfig*/*/*Dto, family, suffixes
 
 ### Domaine métier
 - [[04-Modele-Domaine-Config]] — Decoder, Accessory, Locomotive, Zone, Sector
