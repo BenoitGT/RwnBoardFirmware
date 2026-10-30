@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  setup-env:
+  build-pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -40,14 +40,6 @@ jobs:
       # install Zensical in python env
       - name: Setup doc builder
         run: pip install zensical
-
-  build-pages:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: setup-env
-    steps:
       - name: Build GitHub Pages
         run: zensical build --clean 
 
