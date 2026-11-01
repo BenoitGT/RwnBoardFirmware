@@ -2,66 +2,69 @@
 banner: "[[electronic_banner.png]]"
 banner_y: 100
 ---
-# 1. Identity
-The Powered RS485 block drives up to 4 Servo motors (basic version) using a multiplexed bus, the current revison is 2.0 , wich is a stable design version. The designis provided by :
-- rwnServoMxBlock.kicad_sch
-- rwnServoMxBlock.kicad_pcb
-
-# 2. Overview
-![[rwnRS485_supply_shematics.png]]
-==🔴*All my schematics are NOT professional skills based. I not responsable for electronics issues*==
-Schéma bloc simplifié (entrées, sorties, alimentations) et place du bloc dans le système (relié à quel autre bloc).
+# System LED Indicator
+The System LED Indicator block can use up to 3 LED display. this system is used for indicate several board status : `READY`,`BUSY`or `ERROR`.
+The design is provided by :
+- rwnSLI2Block.kicad_sch
+- rwnSLI2Block.kicad_pcb
 
 
-# 3. Electrical interface (Block API)
-This is the block Pins API table with hierachical signal label 
+## 1. Electrical Interface
+This table gives signals connection list of the `SLI` block. supply connection are not listed as they can be integrated by a global integration with bottom and top surface of the PCB. 
 
-| Broche | Signal | Dir. | Type      | Niveau/plage | Courant max | Remarques  |
-| ------ | ------ | ---- | --------- | ------------ | ----------- | ---------- |
-| 1      | VCC_5V | out  | alim      | 5 V ±5 %     | 1.2 A       |            |
-| 2      | RX     | out  | numérique | 0/5 V        | —           |            |
-| 3      | TX     | in   | numérique | 0/5 V        | —           |            |
-| 4      | RWRS   | in   | numérique | 0/5 V        | —           | actif haut |
-|        |        |      |           |              |             |            |
+ 
+ 
+System LED Indicator
 
 
-# 4. Alimentation et consommation
-Rails utilisés, tension, consommation typique et maximale, protections (diode, fusible), découplage.
 
-# 5. Fonctional specification
+| Broche | Signal  | Dir. | Type    | Niveau/plage | Courant max | Remarques        |
+| ------ | ------- | ---- | ------- | ------------ | ----------- | ---------------- |
+| 1      | STATUS0 | in   | numeric | 0/5 V        | 5.25V       | r.i.s. : L (0 V) |
+| 2      | STATUS1 | in   | numeric | 0/5 V        | 5.25V       | r.i.s. : L (0 V) |
 
-- **LM7805** : Provide ,with capacitors (C3,C4), a regulated voltage of 5V up to 1.5A
-- **RJ12 plug** : Provide main 12V supply and external control data. 
-- **Max3483** : This chip convert RS485 signal to standard usart Rx,Tx. its integration is in half-duplex mode. `RWRS` controls Rx or Tx mode of Max3483.
+*r.i.s. :recommended initial state*
 
+## 2. Functional spécifications 
+The `STATUS[0-1]` inputs drive 2 bits coding states  for the LEDs layout set. Out puts are define as below : 
 
-Preconised configuration for RS485 :
-- 19200 bauds 8,n1
+| STATUS | Green LED | Yellow LED | Red LED     |
+| ------ | --------- | ---------- | ----------- |
+| 00     | OFF       | OFF        | OFF         |
+| 01     | ON        | OFF        | OFF         |
+| 10     | OFF       | OFF        | ON          |
+| 11     | ON        | ON(1)      | OFF / ON(2) |
+*(1) 3 LEDs wired setup,
+(2) Only Green/Red LEDs setup*
 
-| Ready State        | Busy State           | Error State        |
-| ------------------ | -------------------- | ------------------ |
-| ![[sli_ready.gif]] | ![[sli_busy_2w.gif]] | ![[sli_error.gif]] |
+| Ready State                            | Busy State                               | Error State                            |
+| -------------------------------------- | ---------------------------------------- | -------------------------------------- |
+| ![](../../assets/images/sli_ready.gif) | ![](../../assets/images/sli_busy_2w.gif) | ![](../../assets/images/sli_error.gif) |
 
+## 3.  Schematics and components information
+This module use a `JUMPER` for activate the optional `Yellow LED`settup.
 
-# 6. Schéma et composants clés
-Capture de la feuille, liste des composants principaux avec valeurs et rôles, calculs importants (résistances de polarisation, filtres).
+![](../../assets/images/rwnSLI_schematics.png)
+>[!danger] All my schematics are NOT professional skills based. I 'm not responsable for any electronics issues
 
-# 7. PCB Implantaion
+## 4. PCB Implantation
 
-![[rwnSLI.png]]
+![](../../assets/images/rwnSLI_3D.png)
 - Dimensions : 15x15mm
 - Connectors :
 	-   2 pins to drives up to 3 LEDs . the GND is provided by PCB bottom surface
-	
 
-# 8. Firmware integration
-The "" has to be define in`HardwareProfile.h` to link the RWRS(DE) Pin. RC and TX are automatically associated to `usart` module of the MCU.
+## 5. Firmware mapping concept  
+The block driver is implemented in [SystemLEDIndicator(.h|.c)](https://github.com/BenoitGT/RwnBoardFirmware/blob/main/modules/SystemLEDIndicator.h). Use constants definition In `HardwareProfile.h` :
+- `SLI_STATUS0` , `SLI_STATUS0_TRIS` : To define mange `STATUS0`
+-  `SLI_STATUS1` , `SLI_STATUS1_TRIS` : To define mange `STATUS0`
 
 
-# 9. Setting to Work and Tests
-Mesures à faire, valeurs attendues, procédure de vérification, pannes classiques.
+## 6.  Setting to Work and Tests  
+Make a standard STW procedure :
+- Check input supply : Should be a 5V DC
+- Check each LED/Resistor chain 
 
-# 10. Changes history  
+## 7. Change logs and notes
 
-- 2.0 - 2026-10 : fix supply leak, change LM78LS05 for LM7805 to support up to 1.0 A
 - 1.0  - 2018-01 : Initial version

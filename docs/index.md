@@ -12,41 +12,27 @@ banner_y: 70
 > [!info] About
 > Structured sumary of sevral topics arounds **Railway Network Firmware Boards**  project , a Microchip MCU based project.  Boards and firmware ares based on a moduluard conception for reuse purpose.
 >
-> Firmware parts have been reviewed whith *Claude* (Anthropic) for code optitimisation approche.
-> Exchanges and choices validated by this IA help are notice in theses notes.   
+> Firmware parts have been reviewed whith *Claude* (Anthropic) for code optitimisation approche. Exchanges and choices validated by this IA help are notice in theses notes.   
 
 # Notes Map 
 
 ### Fondations
-- [01-Vision-et-Contexte](/firmware/01-Vision-et-Contexte) — goals, POC perimeter, constraints
-- [[02-Modular Architecture]] — structure du repo, workspaces npm
-- [03-Convention-Nommage](firmware/03-Convention-Nommage.md) — RawConfig*/*/*Dto, family, suffixes
+- [01-Project-Vision](firmware/01-Project-Vision.md) — Objectives, Perimeter, constraints limitations
+- [02-Modular-Architecture](firmware/02-Modular-Architecture.md) —  Repo and code organisation
+- [03-Conventions-Rules](firmware/03-Conventions-Rules.md) — Naming , use of #error ,stack use 
 
-### Domaine métier
-- [[04-Modele-Domaine-Config]] — Decoder, Accessory, Locomotive, Zone, Sector
-- [[05-Accessory-Generique]] — modèle générique range/enum/flags, extensibilité
-- [[06-Topologie-Graphe]] — zones=arêtes, signaux/aiguillages=nœuds, toe/heel
-
-### Communication bas niveau
-- [[07-Communication-Serie]] — Transport / FrameCodec / Protocol, encodage NMRA
+### Project Domain
+-  [04-Modules](firmware/04-Modules.md)— Hardware block driver, functionals modules
 
 ### Interfaces
-- [[08-Contrat-WebSocket]] — contrat client/serveur, streaming
-- [[09-Frontend-Angular]] — services, signals, composants
+-  [05-Serial-Communication](firmware/05-Serial-Communication.md) — Railway Network side interfaces, development facilities
+-  [06-Sharing-Buffer-Process](firmware/06-Sharing-Buffer-Process.md) — Dispatching instructions
 
+### Hardware
+- [SignalBoard](hardware/boards/SignalBoard.md)
+- [StarterBoard](hardware/boards/StarterBoard.md)
 ### Transverses
-- [[10-Asynchronicite-et-Robustesse]] — état pending, file de commandes, timeouts
-- [[11-Journal-Decisions]] — journal chronologique des décisions (ADR-like)
+- [07-Decisions -Journal-Logs](firmware/07-Decisions%20-Journal-Logs.md) 
 
-## Vue d'ensemble rapide
+## Overview
 
-```mermaid
-flowchart LR
-    UI[Angular frontend] <-->|WebSocket<br/>DTO| GW[Gateway Node.js]
-    GW <-->|Transport série/LAN| FW[Firmware / Centrale DCC]
-    GW -.->|lit| CFG[(network-config.json)]
-    GW -.->|lit| AP[(access_points.json)]
-```
-
-Trois couches, trois vocabulaires distincts (voir [[03-Convention-Nommage]]) :
-`RawConfig*` (fichiers) → modèle interne (gateway) → `*Dto` (exposé au frontend).

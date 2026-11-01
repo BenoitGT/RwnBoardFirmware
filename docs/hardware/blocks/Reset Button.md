@@ -2,56 +2,49 @@
 banner: "[[electronic_banner.png]]"
 banner_y: 100.0%
 ---
-# 1. Identity
-The Powered RS485 block drives up to 4 Servo motors (basic version) using a multiplexed bus, the current revison is 2.0 , wich is a stable design version. The designis provided by :
-- rwnServoMxBlock.kicad_sch
-- rwnServoMxBlock.kicad_pcb
-
-# 2. Overview
-![[rwnResetBt.png]]
-==🔴*All my schematics are NOT professional skills based. I not responsable for electronics issues*==
-Schéma bloc simplifié (entrées, sorties, alimentations) et place du bloc dans le système (relié à quel autre bloc).
+# Reset Button
+The Reset Button block is a maintenance input command for the bord. 
+The design is provided by :
+- rwnResetBlock.kicad_sch
+- rwnResetBlock.kicad_pcb
 
 
-# 3. Electrical interface (Block API)
-This is the block Pins API table with hierachical signal label 
+## 1. Electrical Interface
+This table gives signals connection list of the `Reset Button` block. supply connection are not listed as they can be integrated by a global integration with bottom and top surface of the PCB. 
 
-| Broche | Signal | Dir. | Type      | Niveau/plage | Courant max | Remarques  |
-| ------ | ------ | ---- | --------- | ------------ | ----------- | ---------- |
-| 1      | VCC_5V | out  | alim      | 5 V ±5 %     | 1.2 A       |            |
-| 2      | RX     | out  | numérique | 0/5 V        | —           |            |
-| 3      | TX     | in   | numérique | 0/5 V        | —           |            |
-| 4      | RWRS   | in   | numérique | 0/5 V        | —           | actif haut |
-|        |        |      |           |              |             |            |
+| Broche | Signal | Dir. | Type    | Niveau/plage | Courant max | Remarques  |
+| ------ | ------ | ---- | ------- | ------------ | ----------- | ---------- |
+| 1      | RESET  | out  | numeric | 0/5 V        | —           | r.i.s. : H |
+*r.i.s. :recommended initial state*
 
+## 2. Functional spécifications 
 
-# 4. Required supply
-Rails utilisés, tension, consommation typique et maximale, protections (diode, fusible), découplage.
-
-# 5. Fonctional specification
-
-- **C1** : Helps to prevent bouncing effect.
+This block is design for a software reset implementation. 
+## 3.  Schematics and components information
 
 
-# 6. Schéma et composants clés
-Capture de la feuille, liste des composants principaux avec valeurs et rôles, calculs importants (résistances de polarisation, filtres).
+![](../../assets/images/rwnResetBt_schematics.png)
+>[!danger] All my schematics are NOT professional skills based. I 'm not responsable for any electronics issues
 
-# 7. PCB Implantaion
+## 4. PCB Implantation
 
-![[rwnResetBt.png]]
-- Dimensions : 15x15mm
+![](../../assets/images/rwnResetBt_3D.png)
+- Dimensions : 15x20mm
 - Connectors :
-	-   2 pins to drives up to 3 LEDs . the GND is provided by PCB bottom surface
+	-   1 pins `RESET`to drives the reset order to MCU.
+	-  2 pins for supply if PCB  global surfaces  are use not suitable.
 	
 
-# 8. Firmware integration
-The "" has to be define in`HardwareProfile.h` to link the RWRS(DE) Pin. RC and TX are automatically associated to `usart` module of the MCU.
+## 5. Firmware mapping concept  
+The block driver is implemented in [ResetBtn(.h|.c)](https://github.com/BenoitGT/RwnBoardFirmware/blob/main/modules/ResetBtn.h). Use constants definition In `HardwareProfile.h` :
+- `RESET_BT` , `RESET_BT_TRIS_TRIS` : To define mange `RESET` signal
 
 
-# 9. Setting to Work and Tests
-Mesures à faire, valeurs attendues, procédure de vérification, pannes classiques.
+## 6.  Setting to Work and Tests  
+Make a standard STW procedure :
+- Check input supply : Should be a 5V DC
+- Check button pull dwon effect
 
-# 10. Changes history  
+## 7. Change logs and notes
 
-- 2.0 - 2026-10 : fix supply leak, change LM78LS05 for LM7805 to support up to 1.0 A
 - 1.0  - 2018-01 : Initial version
