@@ -19,7 +19,7 @@
             "toolchain": "toolchain XC8 3.10",
             "userVariables": "StarterBoard-uservariables",
             "postBuildSteps": [
-                "cd %{ProjectPath} ; python3 mapreport.py \"./_build/%{ProjectName}/%{ConfigurationName}/mem.map\" --hex \"./out/%{ProjectName}/%{ConfigurationName}.hex\" -o \"./docs/%{ConfigurationName}_mem_report.md\" "
+                "cd %{ProjectPath} ; python3 mapreport.py \"./_build/%{ProjectName}/%{ConfigurationName}/mem.map\" --hex \"./out/%{ProjectName}/%{ConfigurationName}.hex\" -o \"./docs/firmware/version-reports/%{ConfigurationName}_mem_report.md\" "
             ]
         },
         {

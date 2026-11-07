@@ -19,12 +19,9 @@
 #include "HardwareProfile.h"
 #include "core/DccDecoder.h"
 
-#if !defined(DCC_PORT) || !defined(DCC_TRIS) || !defined(DCC_MASK)
-#error "HardwareProfile.h must define RWNBUS_DE and RWNBUS_DE_TRIS"
-#endif
 
 
-extern DccPacket_t *DccCurrentPacket;
+extern DccPacket_t *pDccCurrentPacket;
 extern __bit TrkPwr_TXEN;
 extern __bit TrkPwr_TRMT;
 
@@ -33,6 +30,7 @@ extern __bit TrkPwr_TRMT;
 // TrackPower module interface
 void trackPower_Init(void);
 void trackPower_SetDCCMode(unsigned char dccMode);
+void trackPower_SetSpeed(unsigned char speed);
 inline unsigned char trackPower_IsDCCMode(void);
 /**
  * Task interrupt for track power management

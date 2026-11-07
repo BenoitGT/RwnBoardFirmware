@@ -13,7 +13,7 @@ void dccDecoder_Init(void){
 }
 
 // One single function on purpose: every extra level of call costs a hardware stack level.
-unsigned char dccDecoder_Task(const DccPacket_t *pkt, unsigned char n){
+unsigned char dccDecoder_Task(const DccPacket_t *pkt){
 #if DCC_ADDRESS_MF
     unsigned char instrByte1;                   // second byte: instruction (MF) 
  #endif   
@@ -32,10 +32,11 @@ unsigned char dccDecoder_Task(const DccPacket_t *pkt, unsigned char n){
 #endif
 #endif
 
+   /* Already check by RwnBus 
     if(n < DCC_PACKETS_MIN_SIZE){
         return DCC_RESULT_IGNORED;
     }
-    
+   */ 
 
 
     /* ================= address filter and instruction decoding ================= */
@@ -44,32 +45,36 @@ unsigned char dccDecoder_Task(const DccPacket_t *pkt, unsigned char n){
 #if DCC_ADDRESS_MF
     instrByte1 = pkt->rawData[1];
 
+    
+   
     if(pkt->mfip.addr == DCC_BROADCAST_ADDR){   // checked first: address 0 is never "own"
 #if DCC_CV_ACCESS
         if(!dccDecoder_ResetMode || DCC_INSTR_TYPE(i1) != DCC_MF_CV_ACCESS_INSTR){
             return DCC_RESULT_IGNORED;
         }
 #else
+
         return DCC_RESULT_IGNORED;
 #endif
     } else if(pkt->mfip.addr != dccDecoder_Address){
         return DCC_RESULT_IGNORED;      // other decoder, idle (0xFF), accessory, long address
     }
+ 
     switch(DCC_INSTR_TYPE(instrByte1)){
 #ifdef DCC_MF_FN_GRP1_CAPABILITY
     case DCC_MF_FN_GRP1:
-        if(n == 3){
+        //if(n == 3){
             dccDecoder_FnGrp1(DCC_INSTR_DATA(instrByte1 ));
             r = DCC_RESULT_DONE;
-        }
+        //}
         break;
 #endif
 #ifdef DCC_MF_FN_GRP2_CAPABILITY
     case DCC_MF_FN_GRP2:
-        if(n == 3){
+        //if(n == 3){
             dccDecoder_FnGrp2((i1 & 0x10) ? 5 : 9, (unsigned char)(i1 & 0x0F));
             r = DCC_RESULT_DONE;
-        }
+      //  }
         break;
 #endif
 #ifdef DCC_MF_FEATURE_EXPAN_CAPABILITY
@@ -82,8 +87,8 @@ unsigned char dccDecoder_Task(const DccPacket_t *pkt, unsigned char n){
 #endif
 #ifdef DCC_MF_ADV_OPE_CAPABILITY
     case DCC_MF_ADV_OPE_INSTR:
-        if(n == 4 && instrByte1 == 0x3F){       // 128 speed steps
-            dccDecoder_Speed((unsigned char)((pkt->rawData[2] & DCC_MF_DIR_MASK) != 0), (unsigned char)(pkt->rawData[2] & DCC_MF_SPEED_MASK));
+        if(/*n == 4 && */instrByte1 == 0x3F){       // 128 speed steps
+            dccDecoder_Speed((unsigned char)(DCC_INSTR_DIR(pkt->rawData[2]) != 0), (unsigned char)DCC_INSTR_SPEED(pkt->rawData[2]));
             r = DCC_RESULT_DONE;
         }
         break;

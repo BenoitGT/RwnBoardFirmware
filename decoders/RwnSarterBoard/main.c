@@ -19,7 +19,7 @@
 
 
  /** CV cache Managment */
-__EEPROM_DATA(DCC_DEFAULT_ADDR,0x01,0x70,0x70,0x70,0x70); //Default Data for MCU flash
+__EEPROM_DATA(DCC_DEFAULT_ADDR,0x70,0x70,0x70,0x70,0x00,0x00,0x00); //Default Data for MCU flash
 unsigned char CVCcache[MAX_CV];
 
 
@@ -41,6 +41,10 @@ uint8_t sh_porta;
 
 //hook for DCC
 void dccDecoder_Speed(unsigned char forward, unsigned char step){
+   forward<<=7;
+   forward |= (step & 0x7F);
+//systemLEDIndicator_setState(BUSY_STATE);
+   trackPower_SetSpeed(forward);
    return ;
 }
 
@@ -48,7 +52,7 @@ void dccDecoder_FnGrp1(unsigned char mask){
    unsigned char idx = 4;
    unsigned char divergin;
    unsigned char cmdDiverginCycle;
-   systemLEDIndicator_setState(BUSY_STATE);
+ //  systemLEDIndicator_setState(BUSY_STATE);
    while (idx){
       idx--;
       cmdDiverginCycle=0;
@@ -57,13 +61,12 @@ void dccDecoder_FnGrp1(unsigned char mask){
       multiplexedServo_setPosition(idx,cmdDiverginCycle);
  
    } 
-   systemLEDIndicator_setState(READY_STATE);
+ //  systemLEDIndicator_setState(READY_STATE);
 }
 /*
 
 */
 //#define _XTAL_FREQ 4000000       // pour __delay_ms()
-
 
 
 // main.c : ordonnanceur coopératif
@@ -77,7 +80,8 @@ int main(void){
    multiplexedServo_init();
  
    
-    //trackPower_Init();
+    trackPower_Init();
+    trackPower_SetDCCMode(1); // Start in analog mode
    // i2c_init(); 
     dccDecoder_Init();
 
@@ -105,25 +109,31 @@ int main(void){
    //starting...
    isr_init();
    systemLEDIndicator_setState(READY_STATE);
+
    while (1) {
      
-
-    
-
-    
+ 
     //if (RwnBus_OERR || RwnBus_FERR) systemLEDIndicator_setState(ERROR_STATE);
-     rwnBus_task();
+    rwnBus_task();
      
+      
       if ( RWNBUS_FRAME_READY()) {
-         
+         systemLEDIndicator_setState(BUSY_STATE);
+         __delay_ms(500); //to see the led state change DEBUG
          /** Decoder JOB */
-         dccDecoder_Task(pRwnBus_RxPacket,RwnBus_RxPacketLength);
-             
-         /**DCC Transmimison */
-       /*  DccCurrentPacket = pRwnBus_RxPacket;
+         unsigned char ret=dccDecoder_Task(pRwnBus_RxPacket);
+   
+        if (ret == DCC_RESULT_IGNORED) {
+            systemLEDIndicator_setState(ERROR_STATE);
+         }else{
+           systemLEDIndicator_setState(READY_STATE);
+         }
+         /**DCC Transmimison * /
+         pDccCurrentPacket = pRwnBus_RxPacket;
          TrkPwr_TRMT=1 ; //Start Transming 
          while (TrkPwr_TRMT) ;*/
          RWNBUS_RELEASE()   ; //Allow forward in buffer
+         systemLEDIndicator_setState(READY_STATE);
       }
    }
    return 0;

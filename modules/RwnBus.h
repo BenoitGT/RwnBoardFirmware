@@ -62,9 +62,9 @@
 
 /* ---- module data ------------------------------------------------------------------- */
 extern DccPacket_t *pRwnBus_RxPacket; /* last valid packet (raw bytes, xor included), valid while RWNBUS_FRAME_READY() */
-extern unsigned char RwnBus_RxPacketLength;
-extern DccPacket_t *RwnBus_TxPacket; /* packet (raw bytes, xor included) to send, do NOT acces while RWNBUS_TX_BUSY()  */
-extern unsigned char RwnBus_TxPacketLength;
+//extern unsigned char RwnBus_RxPacketLength;
+extern DccPacket_t *pRwnBus_TxPacket; /* packet (raw bytes, xor included) to send, do NOT acces while RWNBUS_TX_BUSY()  */
+//extern unsigned char RwnBus_TxPacketLength;
 
 extern __bit RwnBus_FERR;      /*Framing Error*/
 extern __bit RwnBus_OERR;       /*Over Run Error*/

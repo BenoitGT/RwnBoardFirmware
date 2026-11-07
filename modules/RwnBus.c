@@ -40,6 +40,7 @@ static unsigned char rxLastTime;        /* TMR0 at the last received byte */
 
 static unsigned char BuffHead;             /* header characters seen: 0..RWN_HEADER_SIZE (= payload) */
 static unsigned char BuffTail;  
+static unsigned char BuffCommit;
 static unsigned char PacketStartCount;
 
 
@@ -71,8 +72,9 @@ void rwnBus_init(void){
 
   
     rxLastTime = TMR0;
-    BuffHead = 0;
-    BuffTail = 0;
+    BuffHead = 0;   // index of the next byte to read in the buffer (0..RWNBUS_BUFFER_SIZE-1)
+    BuffTail = 0;   // index of the next byte to write in the buffer (0..RWNBUS_BUFFER_SIZE-1)
+    BuffCommit = 0; // index of the next byte to commit to the queue (0..RWNBUS_BUFFER_SIZE-1)
     RwnBus_RRDY= 0;
     RwnBus_TRMT = 0;
     PacketStartCount = 0;
@@ -113,11 +115,11 @@ void rwnBus_receive_taskInterrupt(void){
     }
 #endif
     if((unsigned char)(now - rxLastTime) >= RWNBUS_SILENCE_MAX){
-        BuffHead = BuffTail + DCC_PACKETS_MAX_SIZE;      /* long silence: a new frame starts */
-        if (BuffHead >= RWN_PACKETS_MAX_SIZE) /*End of buffer ? */
+        BuffTail = BuffHead + DCC_PACKETS_MAX_SIZE;      /* long silence: a new frame starts */
+        if (BuffTail >= RWN_PACKETS_MAX_SIZE) /*End of buffer ? */
         { 
-            BuffHead = 0; /* Back to Start*/
-            if (BuffTail == 0) RwnBus_FERR = 1;   /*Oups*/
+            BuffTail = 0; /* Back to Start*/
+            if (BuffHead == 0) RwnBus_FERR = 1;   /*Oups*/
         }
     }
     rxLastTime = now;
@@ -136,9 +138,9 @@ void rwnBus_receive_taskInterrupt(void){
              
         }
     } else {
-       // *(rwnPacketData + BuffHead)= b;
-       rwnPacketData[ BuffHead] =b;
-        BuffHead++;
+      
+       rwnPacketData[ BuffTail] =b;
+        BuffTail++; /*Warning: Buffer overflow possible */
     }
     
 }
@@ -146,6 +148,13 @@ void rwnBus_receive_taskInterrupt(void){
 void rwnBus_task(void){
     unsigned char n, silence, i, x;
      
+    /*----Manage release action ---*/
+    if(RwnBus_RRDY==0 && pRwnBus_RxPacket!= (DccPacket_t*)(rwnPacketData)+ BuffCommit){
+       BuffHead+= DCC_PACKETS_MAX_SIZE; /** set next packet position */
+       if (BuffHead >= RWNBUS_BUFFER_SIZE) BuffHead=0; /** back to start */
+       pRwnBus_RxPacket= (DccPacket_t*)(rwnPacketData)+ BuffHead; /** set next packet position */
+       RwnBus_RRDY= 1; //new packet ready
+    }
 #if FEAT_RWNBUS_TX 
     /* ---- transmission: one byte per pass, release the bus when the last one has left ---- */
     if(rwnBus_txb){
@@ -176,26 +185,28 @@ void rwnBus_task(void){
 
    
     /* check Packet */  
-    n = BuffHead - BuffTail  ;
+    n = BuffTail- BuffCommit  ;
     if(n >= RWN_PACKETS_MIN_SIZE){
+        
         x = 0;
-        for(i = BuffTail ; i < BuffHead; i++){
+        for(i = BuffTail ; i < BuffCommit; i++){
              x ^= *(rwnPacketData + i);
         }
         if(x == 0){        
-           pRwnBus_RxPacket = (DccPacket_t*)(rwnPacketData+ BuffTail);              /* valid */
-      
-            RwnBus_RxPacketLength=n;
+          // pRwnBus_RxPacket = (DccPacket_t*)(rwnPacketData+ BuffHead);              /* valid */
+  
+          //  RwnBus_RxPacketLength=n;
             RwnBus_RRDY= 1;
             PacketStartCount=0; 
-            BuffTail+= DCC_PACKETS_MAX_SIZE;
+            BuffTail=BuffCommit + DCC_PACKETS_MAX_SIZE; /* start of next packet */
             if (BuffTail >= RWNBUS_BUFFER_SIZE) BuffTail=0; /** back to start */
+            BuffCommit= BuffTail; /*sync commit pointer */
             return;
         }
     }
     if(silence >= RWNBUS_SILENCE_MAX){  /* incomplete or invalid, and no more bytes coming: drop */
-        /** reset read */
-        BuffHead =BuffTail;
+        /** reset receive buffer */
+        BuffTail =BuffCommit;
          PacketStartCount=0; 
     }
   

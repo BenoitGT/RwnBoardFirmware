@@ -156,8 +156,8 @@ void dccDecoder_CvWrite(unsigned int cv, unsigned char value);
 
 /* ---- DccDecoder module interface ------------------------------------------------------- */
 void dccDecoder_Init(void);             // address = 0 (no own address until main loads the CV), reset mode off
-/* pkt = valid packet (address, instruction, data..., xor), n = its length (3..6). Returns DCC_RESULT_*. */
-unsigned char dccDecoder_Task(const DccPacket_t *pkt, unsigned char n);
+/* pkt = valid packet (address, instruction, data..., xor). Returns DCC_RESULT_*. */
+unsigned char dccDecoder_Task(const DccPacket_t *pkt);
 
 
 #endif // DCCDECODER_H

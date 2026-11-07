@@ -35,10 +35,12 @@
 #include "mcu/mcu_pic16f628a.h"
 
 /* ---- functions available on this decoder (1 = compiled) --------------------------- */
-#define FEAT_RWNBUS_RX   1
-//#define FEAT_RWNBUS_TX 1
-#define FEAT_DCC_GEN    1
-#define FEAT_MX_SERVO    1
+#define FEAT_RWNBUS_RX          1
+//#define FEAT_RWNBUS_TX        1
+#define FEAT_DCC_GEN            1
+#define FEAT_MX_SERVO           1
+#define FEAT_ANA_TRACK_POWER    1
+#define FEAT_DCC_TRACK_POWER    1
 
 /* ---- SLI---------------------------------------------------------------------- */
 #define SLI_STATUS0        RA0 /* pin 1 */
@@ -58,10 +60,11 @@
 #define RX_SIZE         16        /* RX ring (power of 2) */
 
 /* ---- TRACk_POWER booster: two complementary outputs on the same port ---------------------- */
-#define DCC_PORT        PORTB
-#define DCC_TRIS        TRISB
-#define DCC_MASK        0x30      /* RB4 | RB5 */
-#define DCC_LEVEL0      0x10      /* initial state: RB4 = 1, RB5 = 0 */
+#define TRKP_PWM             RB4
+#define TRKP_PWM_TRIS        TRISB4
+#define TRKP_DIR_PIN         RB5
+#define TRKP_DIR_PIN_TRIS    TRISB5
+
 
 #define MAX_CV 6
 #define CV1_IDX 0
@@ -95,6 +98,16 @@ extern uint8_t sh_porta;
 
 #define DCC_MF_FN_GRP1_CAPABILITY
 #define DCC_MF_ADV_OPE_CAPABILITY
+
+
+/* ---- I2C 8xIO ---------------------------------------------------------------------- */
+#define BUSI2C8XIO_SDA_TRIS TRISA2
+#define BUSI2C8XIO_SCL_TRIS TRISA3
+#define BUSI2C8XIO_DIR_TRIS TRISA4
+#define BUSI2C8XIO_SDA_PIN  RA2
+#define BUSI2C8XIO_PORT     PORTA
+#define BUSI2C8XIO_PORT_MASK 0x1C
+
 
 
 #endif /* HARDWARE_PROFILE_H */

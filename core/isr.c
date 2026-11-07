@@ -37,7 +37,7 @@ void __interrupt() isr(void)
     rwnBus_receive_taskInterrupt();
 #endif
 #if defined (FEAT_DCC_GEN)
-  //  trackPower_TaskInterrupt();
+    trackPower_TaskInterrupt();
 #endif
 #if defined (FEAT_MX_SERVO)
    multiplexedServo_taskInterrupt();
