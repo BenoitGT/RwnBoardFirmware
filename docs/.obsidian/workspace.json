@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "index.md",
+                "file": "hardware/blocks/TrackPower.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "index"
+              "title": "TrackPower"
             }
           }
         ],
@@ -219,8 +219,12 @@
   },
   "active": "2b39700ed9bb70a0",
   "lastOpenFiles": [
-    "firmware/03-Conventions-Rules.md",
+    "firmware/07-Decisions -Journal-Logs.md",
+    "StarterBoard_mem_report.md",
+    "hardware/blocks/TrackPower.md",
+    "hardware/blocks/MxServo.md",
     "index.md",
+    "firmware/03-Conventions-Rules.md",
     "hardware/boards/SignalBoard.md",
     "hardware/boards/StarterBoard.md",
     "assets/images/signals_board_3D.png",
@@ -228,12 +232,10 @@
     "assets/images/Capture d’écran du 2026-11-01 19-50-04.png",
     "hardware/blocks/Reset Button.md",
     "hardware/blocks/System LED Indicator.md",
-    "hardware/blocks/MxServo.md",
     "hardware/blocks/Powered RS485.md",
     "firmware/06-Sharing-Buffer-Process.md",
     "firmware/02-Modular-Architecture.md",
     "firmware/01-Project-Vision.md",
-    "firmware/07-Decisions -Journal-Logs.md",
     "firmware/04-Modules.md",
     "firmware/05-Serial-Communication.md",
     "firmware/05-Communication-Serie.md",
@@ -261,7 +263,6 @@
     "stylesheets",
     "firmware/00-Conception Overview.md",
     "00-Conception Overview.md",
-    "StarterBoard_mem_report.md",
     "file:/home/benoit/.cache/.fr-0GU8W3/dcc-control-app-SDD/05-Accessory-Generique.md",
     "blocks/System LED Indicator.md"
   ]

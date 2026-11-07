@@ -8,6 +8,9 @@ banner_y: 70
 
 > Short Format logs : One line per decision, in most recent order. detail are given by a link to the note reference.
 
+- 2026-11-02
+**Modules review:** Start of [TrackPower](../hardware/blocks/TrackPower.md) review. reformatted IA code do not provide valid power output. 
+
 - 2026-10-29
 **Docs site:**  migration to Zensical a fork of MkDocs. natives features are a easier way to match with Obsidian vault sources.
 
@@ -18,7 +21,7 @@ banner_y: 70
 **Debug in VS Code:** the status-bar “bug” icon belongs to CMake Tools, not MPLAB; the MPLAB adapter is `mplab-core-da`; a “ToolMediator data” error remains unresolved.
 
 - 2026-10-13
-**VsCode!** Add `tasks.json`to integrate fashing MCU with `pk2cmd`
+**VsCode:** Add `tasks.json`to integrate fashing MCU with `pk2cmd`
 
 - 2026-10-11
 **Sources:** Migration to news repo organisation [02-Modular-Architecture - Repo](02-Modular-Architecture.md#repo-organisation).
